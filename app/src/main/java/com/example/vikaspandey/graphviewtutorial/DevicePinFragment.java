@@ -1,31 +1,33 @@
 package com.example.vikaspandey.graphviewtutorial;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.support.v4.app.DialogFragment;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-
-public class DevicePinFragment extends DialogFragment{
+public class DevicePinFragment extends DialogFragment {
     private static final String TAG = "DevicePinDialog";
+    private BluetoothDevice device;
 
-    public interface OnInputSelected{
+    public interface OnInputSelected {
         void sendInput(String input);
     }
+
     public OnInputSelected mOnInputSelected;
 
     //widgets
     private EditText mInput;
-    private TextView mActionOk, mActionCancel,mInvalidInput;
+    private TextView mActionOk, mActionCancel;
 
     @Nullable
     @Override
@@ -34,7 +36,15 @@ public class DevicePinFragment extends DialogFragment{
         mActionOk = view.findViewById(R.id.action_ok);
         mActionCancel = view.findViewById(R.id.action_cancel);
         mInput = view.findViewById(R.id.input);
-        mInvalidInput = view.findViewById(R.id.invalidPassword);
+
+
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey("EXTRA_DEVICE")) {
+            device = bundle.getParcelable("EXTRA_DEVICE");
+        } else if (bundle == null) {
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_LONG).show();
+        }
+
 
         mActionCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,29 +58,20 @@ public class DevicePinFragment extends DialogFragment{
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: capturing input.");
+
                 String input = mInput.getText().toString();
-                if(!input.equals("1234")){
-//
-//                    //Easiest way: just set the value.
-//                    MainFragment fragment = (MainFragment) getActivity().getFragmentManager().findFragmentByTag("MainFragment");
-//                    fragment.mInputDisplay.setText(input);
+                if (!input.equals("1234")) {
                     Intent i = new Intent(getActivity().getApplicationContext(), TabFragment1.class);
                     i.putExtra("EXTRA_DEVICE", device);
-                    i.putParcelableArrayListExtra("PAIRED_DEVICE",new ArrayList(mBluetoothAdapter.getBondedDevices()));
+                    i.putExtra("PAIRED_DEVICE", device);
                     getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
-                    getDialog().dismiss();
-
-                   // mOnInputSelected.sendInput(input);
-                    mInvalidInput.setEnabled(false);
+                    //startActivity(i);
+                    //mOnInputSelected.sendInput(input);
 
                 }
-                else{
-                    getShowsDialog();
-                    mInvalidInput.setEnabled(true);
-                }
 
 
-                //getDialog().dismiss();
+                getDialog().dismiss();
             }
         });
 
@@ -80,10 +81,10 @@ public class DevicePinFragment extends DialogFragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        try{
+        try {
             mOnInputSelected = (OnInputSelected) getTargetFragment();
-        }catch (ClassCastException e){
-            Log.e(TAG, "onAttach: ClassCastException : " + e.getMessage() );
+        } catch (ClassCastException e) {
+            Log.e(TAG, "onAttach: ClassCastException : " + e.getMessage());
         }
     }
 }
