@@ -146,6 +146,7 @@ public class BTHCommunication extends BITalinoCommunication {
     public boolean start(int[] analogChannels, int sampleRate) throws BITalinoException {
         if(isConnected) {
             if (currentState.equals(States.CONNECTED)) {
+                Log.d("currentState", String.valueOf(currentState));
                 this.analogChannels = validateAnalogChannels(analogChannels);
                 this.totalBytes = calculateTotalBytes(analogChannels);
                 setFreq(sampleRate);

@@ -38,7 +38,7 @@
                 app:contentInsetStart="0dp"
                 android:contentInsetRight="0dp"
                 android:contentInsetEnd="0dp"
-                app:tabIndicatorColor="#FFA500"
+                app:tabIndicatorColor="@color/colorAccent"
                 app:contentInsetRight="0dp"
                 app:contentInsetEnd="0dp"
                 app:tabMode="fixed"

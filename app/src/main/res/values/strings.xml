@@ -3,5 +3,5 @@
     <string name="select_device">Scanning device</string>
     <string name="tab_label1">Home</string>
     <string name="tab_label2">Me</string>
-    <string name="pin">1234</string>
+    <string name="scan">Scan for devices</string>
 </resources>

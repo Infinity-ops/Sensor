@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import util.JSONHelper;
+
 /**
  * Created by vikaspandey on 31/5/18.
  */
@@ -30,6 +32,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String data = JSONHelper.mReadJsonData(item+".json",context);
+
                 Toast.makeText(context, ("Item Selected" + item), Toast.LENGTH_SHORT).show();
             }
         });

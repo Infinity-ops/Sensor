@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="record_options">
+        <item></item>
+        <item>Save</item>
+        <item>Delete</item>
+    </string-array>
+    <string-array name="device_options">Scanning device</string-array>
+
+</resources>

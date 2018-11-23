@@ -1,7 +1,9 @@
 package com.example.vikaspandey.graphviewtutorial;
 
+import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,38 +12,50 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-public class DeviceAdapter extends RecyclerView.Adapter<DeviceHolder>{
-    private ArrayList<BluetoothDevice> devices;
-        Context c;
-    private LayoutInflater mInflator;
+public class DeviceAdapter extends RecyclerView.Adapter<DeviceHolder> {
 
-    public DeviceAdapter(Context c,ArrayList<BluetoothDevice> devices) {
-        this.c = c;
-        this.devices = devices;
-        mInflator = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
+    private Context context;
+    private ArrayList<BluetoothDevice> arrayList;
 
+    private int itemTypeDefault = 1;
 
-    @NonNull
-    @Override
-    public DeviceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_list,parent,false) ;
-         DeviceHolder viewHolder = new DeviceHolder(v);
-        return viewHolder;
-        }
+    public DeviceAdapter(Context context, ArrayList<BluetoothDevice> list) {
+        this.context = context;
+        this.arrayList = list;
+    }
 
     @Override
-    public void onBindViewHolder(@NonNull DeviceHolder holder, int position) {
+    public DeviceHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        final BluetoothDevice device = devices.get(position);
-        holder.deviceAddress.setText(device.getAddress());
-        holder.deviceName.setText(device.getName());
+        if (viewType == itemTypeDefault) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item, parent, false);
+            return new DeviceHolder(context, view);
+        }
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item, parent, false);
+        return new DeviceHolder(context, view);
+    }
+
+    @Override
+    public void onBindViewHolder(DeviceHolder holder, int position) {
+        if (holder instanceof DeviceHolder) {
+            DeviceHolder viewHolder = (DeviceHolder) holder;
+            viewHolder.bindViewWithData(viewHolder, this, arrayList.get(position),
+                    position);
+        }
     }
 
     @Override
     public int getItemCount() {
-            return devices.size();
-            }
+        return arrayList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return itemTypeDefault;
+    }
+
+
 }
 

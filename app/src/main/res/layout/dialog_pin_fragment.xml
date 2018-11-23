@@ -29,19 +29,7 @@
             android:background="@null"
             android:textColor="#000"
             android:hint="enter pin..."
-            android:inputType="number"
             android:id="@+id/input"/>
-
-        <TextView
-            android:id="@+id/invalidPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:enabled="false"
-
-            android:text="Please Enter Valid Password"
-            android:textColor="#000"
-            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
